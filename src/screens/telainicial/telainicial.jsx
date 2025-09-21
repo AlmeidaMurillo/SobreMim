@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './telainicial.module.css';
+import { Menu, X } from "lucide-react";
 
 const codeSnippets = [
     'const [state, setState] = useState(initialValue);',
@@ -51,6 +52,7 @@ const getCodeColor = (text) => {
 
 const TelaInicial = () => {
     const [codeLines, setCodeLines] = useState([]);
+    const [menuOpen, setMenuOpen] = useState(false);
 
     useEffect(() => {
         const initialLines = Array.from({ length: 18 }, (_, i) => {
@@ -157,6 +159,26 @@ const TelaInicial = () => {
 
     return (
         <div className={styles.container}>
+            <header className={styles.header}>
+                <div className={styles.headerContent}>
+                    <a href="#home" className={styles.logo}>ALMEIDA</a>
+
+                    <nav className={`${styles.nav} ${menuOpen ? styles.open : ""}`}>
+                        <a href="#sobre" className={styles.navLink}>Sobre Mim</a>
+                        <a href="#habilidades" className={styles.navLink}>Habilidades</a>
+                        <a href="#projetos" className={styles.navLink}>Projetos</a>
+                        <a href="#experiencia" className={styles.navLink}>Experiência</a>
+                        <a href="#contato" className={styles.navLink}>Contato</a>
+                    </nav>
+
+                    <button
+                        className={styles.menuBtn}
+                        onClick={() => setMenuOpen(!menuOpen)}
+                    >
+                        {menuOpen ? <X size={28} /> : <Menu size={28} />}
+                    </button>
+                </div>
+            </header>
             <div className={styles.backgroundContainer}>
                 <div className={styles.backgroundGradient} />
                 {codeLines.map(line => (
