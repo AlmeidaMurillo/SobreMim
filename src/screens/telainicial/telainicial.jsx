@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './telainicial.module.css';
 import { Menu, X } from "lucide-react";
+import { BsWhatsapp } from "react-icons/bs";
 
+// MELHORAR ESTILIZAÇÃO E RESPONSIVIDADE MODAL
+// OLHAR SITES DE PORTFÓLIO PARA INSPIRAÇÃO, https://www.rhuanbello.com/, https://juniormelo.dev.br/, https://thainanprado.com.br/
+// USAR BASTANTE COISAS DOS PORTIFÓLIOS ACIMA, COLOCAR COMPONENT CARREGAMENTO SPINNER, COLOCAR ABAS PARA COLOCAR PROJETOS COM VIDEOS E ETC TOTALMENTE PROFISSIONAL E INTUITIVO
 const codeSnippets = [
     'const [state, setState] = useState(initialValue);',
     'useEffect(() => { fetchData(); }, [dependency]);',
@@ -53,6 +57,11 @@ const getCodeColor = (text) => {
 const TelaInicial = () => {
     const [codeLines, setCodeLines] = useState([]);
     const [menuOpen, setMenuOpen] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
+
+    useEffect(() => {
+        document.title = "Portifólio | Murillo Almeida - Front-End Developer";
+    }, []);
 
     useEffect(() => {
         const initialLines = Array.from({ length: 18 }, (_, i) => {
@@ -95,22 +104,17 @@ const TelaInicial = () => {
         {
             category: "Frontend",
             icon: "🎨",
-            skills: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Vue.js", "Angular"]
+            skills: ["HTML", "CSS", "JavaScript", "ReactJs"]
         },
         {
             category: "Backend",
             icon: "⚙️",
-            skills: ["Node.js", "Express", "Python", "Django", "PHP", "Laravel"]
+            skills: ["Node.js (Aprimorando)"]
         },
         {
             category: "Database",
             icon: "🗄️",
-            skills: ["MySQL", "PostgreSQL", "MongoDB", "Redis", "Firebase"]
-        },
-        {
-            category: "DevOps",
-            icon: "🚀",
-            skills: ["Docker", "AWS", "Azure", "CI/CD", "Kubernetes", "Linux"]
+            skills: ["MySQL", "SQL"]
         }
     ];
 
@@ -157,18 +161,34 @@ const TelaInicial = () => {
         }
     ];
 
+    const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+    };
+
     return (
         <div className={styles.container}>
             <header className={styles.header}>
                 <div className={styles.headerContent}>
-                    <a href="#home" className={styles.logo}>ALMEIDA</a>
+                    <a
+                        href="#"
+                        className={styles.logo}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            window.scrollTo({ top: 0, behavior: "smooth" });
+                        }}
+                    >
+                        ALMEIDA
+                    </a>
 
                     <nav className={`${styles.nav} ${menuOpen ? styles.open : ""}`}>
-                        <a href="#sobre" className={styles.navLink}>Sobre Mim</a>
-                        <a href="#habilidades" className={styles.navLink}>Habilidades</a>
-                        <a href="#projetos" className={styles.navLink}>Projetos</a>
-                        <a href="#experiencia" className={styles.navLink}>Experiência</a>
-                        <a href="#contato" className={styles.navLink}>Contato</a>
+                        <button className={styles.navLink} onClick={() => scrollToSection('sobre')}>Sobre Mim</button>
+                        <button className={styles.navLink} onClick={() => scrollToSection('habilidades')}>Habilidades</button>
+                        <button className={styles.navLink} onClick={() => scrollToSection('projetos')}>Projetos</button>
+                        <button className={styles.navLink} onClick={() => scrollToSection('experiencia')}>Experiência</button>
+                        <button className={styles.navLink} onClick={() => scrollToSection('contato')}>Contato</button>
                     </nav>
 
                     <button
@@ -199,7 +219,7 @@ const TelaInicial = () => {
                 <div className={styles.overlay} />
 
                 <div className={`${styles.techIndicator} ${styles.techIndicatorReact}`}>
-                    ⚛️ React
+                    ⚛️ ReactJs
                 </div>
                 <div className={`${styles.techIndicator} ${styles.techIndicatorNode}`}>
                     🟢 Node.js
@@ -213,22 +233,21 @@ const TelaInicial = () => {
                 <div className={styles.heroContent}>
                     <div>
                         <h1 className={styles.heroTitle}>ALMEIDA</h1>
-                        <h2 className={styles.heroSubtitle}>Full Stack Developer</h2>
+                        <h2 className={styles.heroSubtitle}>Frontend Developer</h2>
                         <p className={styles.heroDescription}>
-                            Transformando ideias em soluções digitais inovadoras.
-                            Especialista em React, Node.js e MySQL com foco em performance e experiência do usuário excepcional.
+                            Desenvolvedor frontend com 2 anos de experiência em ReactJs, HTML, CSS e JavaScript.
+                            Atualmente estou expandindo meus conhecimentos em desenvolvimento full stack, trabalhando em projetos com Node.js e MySQL.
+                            Busco minha primeira oportunidade de estágio para aplicar e aprimorar minhas habilidades..
                         </p>
                     </div>
 
                     <div className={styles.buttonContainer}>
-                        <a
-                            href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial"
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <button
                             className={styles.primaryButton}
+                            onClick={() => setModalOpen(true)}
                         >
-                            📧 Entre em Contato
-                        </a>
+                            Entre em Contato
+                        </button>
                         <a
                             href="/cv-almeida.pdf"
                             download
@@ -238,18 +257,121 @@ const TelaInicial = () => {
                         </a>
                     </div>
 
+                    {modalOpen && (
+                        <div className={styles.modalOverlay} onClick={() => setModalOpen(false)}>
+                            <div
+                                className={styles.modalContent}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                <button
+                                    className={styles.modalClose}
+                                    onClick={() => setModalOpen(false)}
+                                >
+                                    &times;
+                                </button>
+
+                                <h2 className={styles.modalTitle}>Vamos Trabalhar Juntos?</h2>
+                                <p className={styles.modalIntro}>
+                                    Estou sempre aberto a novos desafios e oportunidades.
+                                    Entre em contato para discutirmos seu próximo projeto!
+                                </p>
+
+                                <div className={styles.contactGrid}>
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg
+                                                width="32"
+                                                height="32"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.855l9.615-7.034h.749c.904 0 1.636.732 1.636 1.636z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>Email</h3>
+                                        <a
+                                            href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            almeidamurillo196@gmail.com
+                                        </a>
+                                    </div>
+
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg
+                                                width="32"
+                                                height="32"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>LinkedIn</h3>
+                                        <a
+                                            href="https://www.linkedin.com/in/AlmeidaMurillo"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            www.linkedin.com/in/AlmeidaMurillo
+                                        </a>
+                                    </div>
+
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg
+                                                width="32"
+                                                height="32"
+                                                fill="currentColor"
+                                                viewBox="0 0 24 24"
+                                            >
+                                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>GitHub</h3>
+                                        <a
+                                            href="https://github.com/AlmeidaMurillo"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            github.com/AlmeidaMurillo
+                                        </a>
+                                    </div>
+
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}><BsWhatsapp size={32} /></div>
+                                        <h3 className={styles.contactTitle}>WhatsApp</h3>
+                                        <a
+                                            href="https://wa.me/5511970543189"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            +55 11 97054-3189
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     <div className={styles.socialLinks}>
-                        <a href="https://github.com/almeida" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                        <a href="https://github.com/AlmeidaMurillo" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                             <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                             </svg>
                         </a>
-                        <a href="https://linkedin.com/in/almeida-dev" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                        <a href="https://linkedin.com/in/AlmeidaMurillo" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                             <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                             </svg>
                         </a>
-                        <a href="mailto:almeida.dev@gmail.com" className={styles.socialLink}>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                             <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.855l9.615-7.034h.749c.904 0 1.636.732 1.636 1.636z" />
                             </svg>
@@ -258,32 +380,29 @@ const TelaInicial = () => {
                 </div>
             </section>
 
-            <section className={styles.section}>
+            <section id="sobre" className={styles.section}>
                 <div className={styles.maxWidth}>
                     <h2 className={styles.sectionTitle}>Sobre Mim</h2>
                     <div className={styles.card}>
                         <div className={styles.aboutGrid}>
                             <div className={styles.aboutText}>
                                 <p className={styles.aboutParagraph}>
-                                    Sou um desenvolvedor full stack apaixonado por tecnologia e inovação.
-                                    Com mais de 5 anos de experiência, especializo-me em criar soluções
-                                    web robustas e escaláveis usando React, Node.js e MySQL.
+                                    Sou desenvolvedor frontend com 2 anos de experiência em ReactJs, HTML, CSS e JavaScript.
+                                    Tenho Paixão por criar interfaces interativas e aplicações web eficientes, sempre priorizando a experiência do usuário.
                                 </p>
                                 <p className={styles.aboutParagraph}>
-                                    Minha jornada inclui o desenvolvimento de aplicações complexas,
-                                    desde e-commerce até sistemas empresariais, sempre focando em
-                                    código limpo, performance otimizada e experiência do usuário excepcional.
+                                    Atualmente estou desenvolvendo projetos full stack para aprofundar meus conhecimentos em Node.js, MySQL e SQL,
+                                    aprendendo a criar APIs, gerenciar bancos de dados e integrar backend e frontend de forma prática.
                                 </p>
                                 <p className={styles.aboutParagraph}>
-                                    Tenho experiência sólida em arquiteturas modernas, APIs RESTful,
-                                    bancos de dados relacionais e não-relacionais, além de práticas
-                                    DevOps para deploy e manutenção de aplicações em produção.
+                                    Meu objetivo é conseguir meu primeiro estágio como desenvolvedor, contribuir com projetos reais e continuar evoluindo profissionalmente.
                                 </p>
+
                             </div>
                             <div className={styles.statsGrid}>
                                 <div className={styles.statCard}>
                                     <div className={styles.statIcon}>💻</div>
-                                    <div className={styles.statNumber}>150+</div>
+                                    <div className={styles.statNumber}>4+</div>
                                     <div className={styles.statLabel}>Projetos</div>
                                 </div>
                                 <div className={styles.statCard}>
@@ -293,7 +412,7 @@ const TelaInicial = () => {
                                 </div>
                                 <div className={styles.statCard}>
                                     <div className={styles.statIcon}>🚀</div>
-                                    <div className={styles.statNumber}>5+</div>
+                                    <div className={styles.statNumber}>2+</div>
                                     <div className={styles.statLabel}>Anos</div>
                                 </div>
                                 <div className={styles.statCard}>
@@ -307,7 +426,7 @@ const TelaInicial = () => {
                 </div>
             </section>
 
-            <section className={styles.section}>
+            <section id="habilidades" className={styles.section}>
                 <div className={styles.maxWidth}>
                     <h2 className={styles.sectionTitle}>Habilidades Técnicas</h2>
                     <div className={`${styles.grid} ${styles.gridCols4}`}>
@@ -330,7 +449,7 @@ const TelaInicial = () => {
                 </div>
             </section>
 
-            <section className={styles.section}>
+            <section id="projetos" className={styles.section}>
                 <div className={styles.maxWidth}>
                     <h2 className={styles.sectionTitle}>Projetos em Destaque</h2>
                     <div className={`${styles.grid} ${styles.gridCols3}`}>
@@ -375,58 +494,28 @@ const TelaInicial = () => {
                 </div>
             </section>
 
-            <section className={styles.section}>
+            <section id="experiencia" className={styles.section}>
                 <div className={styles.maxWidth}>
                     <h2 className={styles.sectionTitle}>Experiência Profissional</h2>
                     <div>
                         <div className={styles.experienceCard}>
                             <div className={styles.experienceHeader}>
                                 <div>
-                                    <h3 className={styles.experienceTitle}>Senior Full Stack Developer</h3>
-                                    <p className={styles.experienceCompany}>TechCorp Solutions</p>
+                                    <h3 className={styles.experienceTitle}>Ainda não possuo experiência profissional</h3>
+                                    <p className={styles.experienceCompany}>Buscando meu primeiro estágio</p>
                                 </div>
-                                <span className={styles.experienceDate}>2022 - Presente</span>
+                                <span className={styles.experienceDate}>—</span>
                             </div>
                             <p className={styles.experienceDescription}>
-                                Liderança técnica no desenvolvimento de aplicações web complexas usando React, Node.js e MySQL.
-                                Responsável por arquitetura de sistemas, mentoria de desenvolvedores júnior e implementação de
-                                melhores práticas de desenvolvimento.
-                            </p>
-                        </div>
-
-                        <div className={styles.experienceCard}>
-                            <div className={styles.experienceHeader}>
-                                <div>
-                                    <h3 className={styles.experienceTitle}>Full Stack Developer</h3>
-                                    <p className={styles.experienceCompany}>StartupXYZ</p>
-                                </div>
-                                <span className={styles.experienceDate}>2020 - 2022</span>
-                            </div>
-                            <p className={styles.experienceDescription}>
-                                Desenvolvimento de MVP e escalabilidade de aplicações. Implementação de APIs RESTful,
-                                integração com bancos de dados MySQL e PostgreSQL, e desenvolvimento frontend com React e TypeScript.
-                            </p>
-                        </div>
-
-                        <div className={styles.experienceCard}>
-                            <div className={styles.experienceHeader}>
-                                <div>
-                                    <h3 className={styles.experienceTitle}>Frontend Developer</h3>
-                                    <p className={styles.experienceCompany}>WebAgency Pro</p>
-                                </div>
-                                <span className={styles.experienceDate}>2019 - 2020</span>
-                            </div>
-                            <p className={styles.experienceDescription}>
-                                Especialização em desenvolvimento frontend com React, criação de interfaces responsivas
-                                e otimização de performance. Colaboração estreita com designers UX/UI para implementação
-                                pixel-perfect de layouts.
+                                Atualmente estou aprimorando minhas habilidades em desenvolvimento web com ReactJs, Node.js e outras tecnologias,
+                                buscando minha primeira oportunidade como estagiário para colocar em prática meus conhecimentos e contribuir em projetos reais.
                             </p>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className={styles.section}>
+            <section id="contato" className={styles.section}>
                 <div className={styles.maxWidth}>
                     <div className={styles.contactCenter}>
                         <h2 className={styles.sectionTitle}>Vamos Trabalhar Juntos?</h2>
@@ -437,24 +526,54 @@ const TelaInicial = () => {
                         <div className={styles.contactCard}>
                             <div className={styles.contactGrid}>
                                 <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>📧</div>
+                                    <div className={styles.contactIcon}>
+                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.855l9.615-7.034h.749c.904 0 1.636.732 1.636 1.636z" />
+                                        </svg>
+                                    </div>
                                     <h3 className={styles.contactTitle}>Email</h3>
-                                    <a href="mailto:almeida.dev@gmail.com" className={styles.contactLink}>
-                                        almeida.dev@gmail.com
+                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                                        almeidamurillo196@gmail.com
                                     </a>
                                 </div>
                                 <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>💼</div>
+                                    <div className={styles.contactIcon}>
+                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                        </svg>
+                                    </div>
                                     <h3 className={styles.contactTitle}>LinkedIn</h3>
-                                    <a href="https://linkedin.com/in/almeida-dev" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
-                                        linkedin.com/in/almeida-dev
+                                    <a
+                                        href="https://www.linkedin.com/in/AlmeidaMurillo"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.contactLink}
+                                    >
+                                        www.linkedin.com/in/AlmeidaMurillo
+                                    </a>
+
+                                </div>
+                                <div className={styles.contactItem}>
+                                    <div className={styles.contactIcon}>
+                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                        </svg>
+                                    </div>
+                                    <h3 className={styles.contactTitle}>GitHub</h3>
+                                    <a href="https://github.com/AlmeidaMurillo" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                                        github.com/AlmeidaMurillo
                                     </a>
                                 </div>
                                 <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>🔗</div>
-                                    <h3 className={styles.contactTitle}>GitHub</h3>
-                                    <a href="https://github.com/almeida" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
-                                        github.com/almeida
+                                    <div className={styles.contactIcon}><BsWhatsapp size={32} /></div>
+                                    <h3 className={styles.contactTitle}>WhatsApp</h3>
+                                    <a
+                                        href="https://wa.me/5511970543189"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className={styles.contactLink}
+                                    >
+                                        +55 11 97054-3189
                                     </a>
                                 </div>
                             </div>
@@ -484,7 +603,7 @@ const TelaInicial = () => {
             <footer className={styles.footer}>
                 <div className={styles.maxWidth}>
                     <p className={styles.footerText}>
-                        © 2024 Almeida. Desenvolvido com ❤️ usando React, Node.js e MySQL
+                        © 2025 Almeida. Desenvolvido com ❤️ usando ReactJs.
                     </p>
                     <p className={styles.footerQuote}>
                         "Code is poetry written in logic" - Transformando ideias em realidade digital
