@@ -60,10 +60,6 @@ const TelaInicial = () => {
     const [modalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
-        document.title = "Portifólio | Murillo Almeida - Front-End Developer";
-    }, []);
-
-    useEffect(() => {
         const initialLines = Array.from({ length: 18 }, (_, i) => {
             const text = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
             return {
