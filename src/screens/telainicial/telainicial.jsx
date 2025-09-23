@@ -33,6 +33,7 @@ const codeSnippets = [
     'const connection = mysql.createConnection({ host, user, password });',
     'ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;',
     'DELETE FROM sessions WHERE expires_at < NOW();',
+    
 
     'const pool = mysql.createPool({ connectionLimit: 10 });',
     'app.post("/auth/login", validateUser, generateToken);',
@@ -40,6 +41,15 @@ const codeSnippets = [
     'res.status(200).json({ success: true, data: results });',
     'const query = "SELECT * FROM users"; pool.query(query, callback);',
     'axios.post("/api/register", userData).then(response => ...);',
+
+    'SELECT * FROM users WHERE email = ? AND active = 1;',
+    'INSERT INTO products (name, price) VALUES (?, ?);',
+    'UPDATE users SET last_login = NOW() WHERE id = ?;',
+    'CREATE TABLE orders (id INT PRIMARY KEY AUTO_INCREMENT);',
+    'JOIN orders o ON u.id = o.user_id WHERE o.status = "completed";',
+    'const connection = mysql.createConnection({ host, user, password });',
+    'ALTER TABLE users ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;',
+    'DELETE FROM sessions WHERE expires_at < NOW();',
 ];
 
 const getCodeColor = (text) => {
