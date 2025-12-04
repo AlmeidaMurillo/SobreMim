@@ -121,8 +121,8 @@ const TelaInicial = () => {
 
     const projects = [
         {
-            title: "ERP SaaS PDV Multiempresa",
-            description: "Sistema completo de ponto de venda com dashboard moderno, suporte multiempresa, frontend em React.js e backend em Node.js.",
+            title: "ERP SaaS PDV Multiempresa (Em Desenvolvimento)",
+            description: "Sistema completo de ponto de venda com dashboard moderno, suporte multiempresa, frontend em React.js e backend em Node.js. ",
             technologies: ["React", "Node.js", "MySQL"],
             githubUrl: "https://github.com/AlmeidaMurillo",
             liveUrl: "https://multi-almeida-pdv-saa-s.vercel.app"
@@ -266,11 +266,6 @@ const TelaInicial = () => {
                                     <div className={styles.statIcon}>💻</div>
                                     <div className={styles.statNumber}>3+</div>
                                     <div className={styles.statLabel}>Projetos</div>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <div className={styles.statIcon}>☕</div>
-                                    <div className={styles.statNumber}>∞</div>
-                                    <div className={styles.statLabel}>Cafés</div>
                                 </div>
                                 <div className={styles.statCard}>
                                     <div className={styles.statIcon}>🚀</div>
