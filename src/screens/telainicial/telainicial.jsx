@@ -2,6 +2,21 @@ import React, { useEffect, useState } from 'react';
 import styles from './telainicial.module.css';
 import { Menu, X } from "lucide-react";
 import { BsWhatsapp } from "react-icons/bs";
+import { useIntersectionObserver } from '../../hooks/useIntersectionObserver';
+import Spinner from '../../components/Spinner';
+
+// Componente wrapper para animação
+const Animated = ({ children }) => {
+    const [ref, isIntersecting] = useIntersectionObserver({ threshold: 0.1 });
+
+    return (
+        <div ref={ref} className={`${styles.reveal} ${isIntersecting ? styles.visible : ''}`}>
+            {children}
+        </div>
+    );
+};
+
+
 
 // MELHORAR ESTILIZAÇÃO E RESPONSIVIDADE MODAL
 // OLHAR SITES DE PORTFÓLIO PARA INSPIRAÇÃO, https://www.rhuanbello.com/, https://juniormelo.dev.br/, https://thainanprado.com.br/
@@ -68,8 +83,18 @@ const TelaInicial = () => {
     const [codeLines, setCodeLines] = useState([]);
     const [menuOpen, setMenuOpen] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 1800); // 1.8 segundos de loading
+
+        return () => clearTimeout(timer);
+    }, []);
+
+    useEffect(() => {
+        if (loading) return; // Não executa a animação de fundo enquanto carrega
         const initialLines = Array.from({ length: 18 }, (_, i) => {
             const text = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
             return {
@@ -104,7 +129,7 @@ const TelaInicial = () => {
         }, 50);
 
         return () => clearInterval(interval);
-    }, []);
+    }, [loading]);
 
     const skills = [
         {
@@ -145,6 +170,7 @@ const TelaInicial = () => {
 
     return (
         <div className={styles.container}>
+            <Spinner loading={loading} />
             <header className={styles.header}>
                 <div className={styles.headerContent}>
                     <a
@@ -245,198 +271,202 @@ const TelaInicial = () => {
             </section>
 
             <section id="sobre" className={styles.section}>
-                <div className={styles.maxWidth}>
-                    <h2 className={styles.sectionTitle}>Sobre Mim</h2>
-                    <div className={styles.card}>
-                        <div className={styles.aboutGrid}>
-                            <div className={styles.aboutText}>
-                                <p className={styles.aboutParagraph}>
-                                    Meu nome é Murillo Inacio Ludovico De Almeida, tenho 18 anos e sou de São Paulo - SP.
-                                </p>
-                                <p className={styles.aboutParagraph}>
-                                    Desenvolvedor Front-end com foco em criação de interfaces modernas, performáticas e responsivas utilizando React.js. 
-                                </p>
-                                <p className={styles.aboutParagraph}>
-                                    Possuo experiência prática em projetos full stack, incluindo um ERP SaaS em desenvolvimento integrando Node.js e MySQL.
-                                </p>
-                                <p className={styles.aboutParagraph}>
-                                    Sou dedicado, evoluindo constantemente e alinhado às melhores práticas, mantendo código limpo, organizado e voltado para entrega de valor.
-                                </p>
-
-                            </div>
-                            <div className={styles.statsGrid}>
-                                <div className={styles.statCard}>
-                                    <div className={styles.statIcon}>💻</div>
-                                    <div className={styles.statNumber}>3+</div>
-                                    <div className={styles.statLabel}>Projetos</div>
+                <Animated>
+                    <div className={styles.maxWidth}>
+                        <h2 className={styles.sectionTitle}>Sobre Mim</h2>
+                        <div className={styles.card}>
+                            <div className={styles.aboutGrid}>
+                                <div className={styles.aboutText}>
+                                    <p className={styles.aboutParagraph}>
+                                        Olá, sou Murillo Inacio Ludovico de Almeida, um desenvolvedor de 18 anos de São Paulo, apaixonado por transformar ideias em realidade digital. Minha jornada no desenvolvimento web é focada na criação de experiências de usuário que sejam não apenas funcionais, mas também intuitivas e visualmente atraentes.
+                                    </p>
+                                    <p className={styles.aboutParagraph}>
+                                        Com uma base sólida em React.js, estou constantemente explorando o ecossistema full stack, trabalhando ativamente com Node.js e MySQL para construir soluções completas e robustas, como meu projeto atual de um ERP SaaS.
+                                    </p>
+                                    <p className={styles.aboutParagraph}>
+                                        Acredito em código limpo, arquitetura escalável e na colaboração em equipe para entregar produtos de alto valor. Estou sempre em busca de novos desafios para aprimorar minhas habilidades e contribuir para projetos inovadores.
+                                    </p>
                                 </div>
-                                <div className={styles.statCard}>
-                                    <div className={styles.statIcon}>🚀</div>
-                                    <div className={styles.statNumber}>2+</div>
-                                    <div className={styles.statLabel}>Anos</div>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <div className={styles.statIcon}>🌟</div>
-                                    <div className={styles.statNumber}>24/7</div>
-                                    <div className={styles.statLabel}>Dedicação</div>
+                                <div className={styles.statsGrid}>
+                                    <div className={styles.statCard}>
+                                        <div className={styles.statIcon}>💻</div>
+                                        <div className={styles.statNumber}>3+</div>
+                                        <div className={styles.statLabel}>Projetos</div>
+                                    </div>
+                                    <div className={styles.statCard}>
+                                        <div className={styles.statIcon}>🚀</div>
+                                        <div className={styles.statNumber}>2+</div>
+                                        <div className={styles.statLabel}>Anos</div>
+                                    </div>
+                                    <div className={styles.statCard}>
+                                        <div className={styles.statIcon}>🌟</div>
+                                        <div className={styles.statNumber}>24/7</div>
+                                        <div className={styles.statLabel}>Dedicação</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Animated>
             </section>
 
             <section id="habilidades" className={styles.section}>
-                <div className={styles.maxWidth}>
-                    <h2 className={styles.sectionTitle}>Habilidades Técnicas</h2>
-                    <div className={`${styles.grid} ${styles.gridCols4}`}>
-                        {skills.map((skill, index) => (
-                            <div key={index} className={styles.skillCard}>
-                                <div className={styles.skillHeader}>
-                                    <span style={{ fontSize: '1.5rem' }}>{skill.icon}</span>
-                                    <h3 className={styles.skillTitle}>{skill.category}</h3>
+                <Animated>
+                    <div className={styles.maxWidth}>
+                        <h2 className={styles.sectionTitle}>Habilidades Técnicas</h2>
+                        <div className={`${styles.grid} ${styles.gridCols4}`}>
+                            {skills.map((skill, index) => (
+                                <div key={index} className={styles.skillCard}>
+                                    <div className={styles.skillHeader}>
+                                        <span style={{ fontSize: '1.5rem' }}>{skill.icon}</span>
+                                        <h3 className={styles.skillTitle}>{skill.category}</h3>
+                                    </div>
+                                    <div className={styles.skillTags}>
+                                        {skill.skills.map((skillName, skillIndex) => (
+                                            <span key={skillIndex} className={styles.skillTag}>
+                                                {skillName}
+                                            </span>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className={styles.skillTags}>
-                                    {skill.skills.map((skillName, skillIndex) => (
-                                        <span key={skillIndex} className={styles.skillTag}>
-                                            {skillName}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </Animated>
             </section>
 
             <section id="projetos" className={styles.section}>
-                <div className={styles.maxWidth}>
-                    <h2 className={styles.sectionTitle}>Projetos em Destaque</h2>
-                    <div className={`${styles.grid} ${styles.gridCols3}`}>
-                        {projects.map((project, index) => (
-                            <div key={index} className={styles.projectCard}>
-                                <h3 className={styles.projectTitle}>{project.title}</h3>
-                                <p className={styles.projectDescription}>{project.description}</p>
+                <Animated>
+                    <div className={styles.maxWidth}>
+                        <h2 className={styles.sectionTitle}>Projetos em Destaque</h2>
+                        <div className={`${styles.grid} ${styles.gridCols3}`}>
+                            {projects.map((project, index) => (
+                                <div key={index} className={styles.projectCard}>
+                                    <h3 className={styles.projectTitle}>{project.title}</h3>
+                                    <p className={styles.projectDescription}>{project.description}</p>
 
-                                <div className={styles.projectTech}>
-                                    {project.technologies.map((tech, techIndex) => (
-                                        <span key={techIndex} className={styles.projectTechTag}>
-                                            {tech}
-                                        </span>
-                                    ))}
-                                </div>
+                                    <div className={styles.projectTech}>
+                                        {project.technologies.map((tech, techIndex) => (
+                                            <span key={techIndex} className={styles.projectTechTag}>
+                                                {tech}
+                                            </span>
+                                        ))}
+                                    </div>
 
-                                <div className={styles.projectLinks}>
-                                    {project.githubUrl && (
-                                        <a
-                                            href={project.githubUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={styles.projectLink}
-                                        >
-                                            🔗 Código
-                                        </a>
-                                    )}
-                                    {project.liveUrl && (
-                                        <a
-                                            href={project.liveUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className={`${styles.projectLink} ${styles.projectLinkDemo}`}
-                                        >
-                                            🚀 Demo
-                                        </a>
-                                    )}
+                                    <div className={styles.projectLinks}>
+                                        {project.githubUrl && (
+                                            <a
+                                                href={project.githubUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={styles.projectLink}
+                                            >
+                                                🔗 Código
+                                            </a>
+                                        )}
+                                        {project.liveUrl && (
+                                            <a
+                                                href={project.liveUrl}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className={`${styles.projectLink} ${styles.projectLinkDemo}`}
+                                            >
+                                                🚀 Demo
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
-                </div>
+                </Animated>
             </section>
 
             <section id="contato" className={styles.section}>
-                <div className={styles.maxWidth}>
-                    <div className={styles.contactCenter}>
-                        <h2 className={styles.sectionTitle}>Vamos Trabalhar Juntos?</h2>
-                        <p className={styles.contactIntro}>
-                            Estou sempre aberto a novos desafios e oportunidades.
-                            Entre em contato para discutirmos seu próximo projeto!
-                        </p>
-                        <div className={styles.contactCard}>
-                            <div className={styles.contactGrid}>
-                                <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>
-                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.855l9.615-7.034h.749c.904 0 1.636.732 1.636 1.636z" />
-                                        </svg>
+                <Animated>
+                    <div className={styles.maxWidth}>
+                        <div className={styles.contactCenter}>
+                            <h2 className={styles.sectionTitle}>Vamos Trabalhar Juntos?</h2>
+                            <p className={styles.contactIntro}>
+                                Estou sempre aberto a novos desafios e oportunidades.
+                                Entre em contato para discutirmos seu próximo projeto!
+                            </p>
+                            <div className={styles.contactCard}>
+                                <div className={styles.contactGrid}>
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-.904.732-1.636 1.636-1.636h.749L12 10.855l9.615-7.034h.749c.904 0 1.636.732 1.636 1.636z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>Email</h3>
+                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                                            almeidamurillo196@gmail.com
+                                        </a>
                                     </div>
-                                    <h3 className={styles.contactTitle}>Email</h3>
-                                    <a href="https://mail.google.com/mail/?view=cm&fs=1&to=almeidamurillo196@gmail.com&su=Assunto&body=Mensagem%20inicial" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
-                                        almeidamurillo196@gmail.com
-                                    </a>
-                                </div>
-                                <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>
-                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-                                        </svg>
-                                    </div>
-                                    <h3 className={styles.contactTitle}>LinkedIn</h3>
-                                    <a
-                                        href="https://www.linkedin.com/in/AlmeidaMurillo"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.contactLink}
-                                    >
-                                        www.linkedin.com/in/AlmeidaMurillo
-                                    </a>
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>LinkedIn</h3>
+                                        <a
+                                            href="https://www.linkedin.com/in/AlmeidaMurillo"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            www.linkedin.com/in/AlmeidaMurillo
+                                        </a>
 
-                                </div>
-                                <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}>
-                                        <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
-                                        </svg>
                                     </div>
-                                    <h3 className={styles.contactTitle}>GitHub</h3>
-                                    <a href="https://github.com/AlmeidaMurillo" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
-                                        github.com/AlmeidaMurillo
-                                    </a>
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}>
+                                            <svg width="32" height="32" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
+                                            </svg>
+                                        </div>
+                                        <h3 className={styles.contactTitle}>GitHub</h3>
+                                        <a href="https://github.com/AlmeidaMurillo" target="_blank" rel="noopener noreferrer" className={styles.contactLink}>
+                                            github.com/AlmeidaMurillo
+                                        </a>
+                                    </div>
+                                    <div className={styles.contactItem}>
+                                        <div className={styles.contactIcon}><BsWhatsapp size={32} /></div>
+                                        <h3 className={styles.contactTitle}>WhatsApp</h3>
+                                        <a
+                                            href="https://wa.me/5511970543189"
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={styles.contactLink}
+                                        >
+                                            +55 11 97054-3189
+                                        </a>
+                                    </div>
                                 </div>
-                                <div className={styles.contactItem}>
-                                    <div className={styles.contactIcon}><BsWhatsapp size={32} /></div>
-                                    <h3 className={styles.contactTitle}>WhatsApp</h3>
-                                    <a
-                                        href="https://wa.me/5511970543189"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className={styles.contactLink}
-                                    >
-                                        +55 11 97054-3189
-                                    </a>
-                                </div>
-                            </div>
 
-                            <div className={styles.availabilitySection}>
-                                <h3 className={styles.availabilityTitle}>Disponível para:</h3>
-                                <div className={styles.availabilityTags}>
-                                    <span className={`${styles.availabilityTag} ${styles.availabilityTagFreelance}`}>
-                                        Projetos Freelance
-                                    </span>
-                                    <span className={`${styles.availabilityTag} ${styles.availabilityTagConsulting}`}>
-                                        Consultoria Técnica
-                                    </span>
-                                    <span className={`${styles.availabilityTag} ${styles.availabilityTagFulltime}`}>
-                                        Oportunidades Full-time
-                                    </span>
-                                    <span className={`${styles.availabilityTag} ${styles.availabilityTagMentoring}`}>
-                                        Mentoria
-                                    </span>
+                                <div className={styles.availabilitySection}>
+                                    <h3 className={styles.availabilityTitle}>Disponível para:</h3>
+                                    <div className={styles.availabilityTags}>
+                                        <span className={`${styles.availabilityTag} ${styles.availabilityTagFreelance}`}>
+                                            Projetos Freelance
+                                        </span>
+                                        <span className={`${styles.availabilityTag} ${styles.availabilityTagConsulting}`}>
+                                            Consultoria Técnica
+                                        </span>
+                                        <span className={`${styles.availabilityTag} ${styles.availabilityTagFulltime}`}>
+                                            Oportunidades Full-time
+                                        </span>
+                                        <span className={`${styles.availabilityTag} ${styles.availabilityTagMentoring}`}>
+                                            Mentoria
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </Animated>
             </section>
 
             <footer className={styles.footer}>
@@ -458,10 +488,10 @@ const TelaInicial = () => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
-                            className={styles.modalClose}
+                            className={styles.modalCloseButton}
                             onClick={() => setModalOpen(false)}
                         >
-                            &times;
+                            <X size={20} />
                         </button>
 
                         <h2 className={styles.modalTitle}>Vamos Trabalhar Juntos?</h2>
