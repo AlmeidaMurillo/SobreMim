@@ -65,10 +65,6 @@
   color: #fff;
 }
 
-.navLink:active::after {
-  width: 100%;
-}
-
 
 .menuBtn {
   display: none;
@@ -214,10 +210,6 @@
   cursor: pointer;
 }
 
-.primaryButton:hover {
-  background: linear-gradient(to right, #1d4ed8, #6d28d9);
-}
-
 .socialLinks {
   display: flex;
   justify-content: center;
@@ -229,10 +221,6 @@
   color: #94a3b8;
   transition: color 0.3s;
   text-decoration: none;
-}
-
-.socialLink:hover {
-  color: white;
 }
 
 .maxWidth {
@@ -281,11 +269,6 @@
   transition: all 0.3s;
 }
 
-.skillCard:hover {
-  background-color: rgba(30, 41, 59, 0.7);
-  transform: scale(1.05);
-}
-
 .skillHeader {
   display: flex;
   align-items: center;
@@ -320,11 +303,6 @@
   border-radius: 8px;
   padding: 24px;
   transition: all 0.3s;
-}
-
-.projectCard:hover {
-  background-color: rgba(30, 41, 59, 0.7);
-  transform: scale(1.05);
 }
 
 .projectTitle {
@@ -371,17 +349,9 @@
   transition: all 0.3s;
 }
 
-.projectLink:hover {
-  background-color: #1e293b;
-}
-
 .projectLinkDemo {
   border-color: #2563eb;
   color: #60a5fa;
-}
-
-.projectLinkDemo:hover {
-  background-color: rgba(37, 99, 235, 0.2);
 }
 
 .experienceCard {
@@ -458,10 +428,6 @@
   display: inline-block;
   max-width: 180px;
   word-wrap: break-word;
-}
-
-.contactLink:hover {
-  color: #60a5fa;
 }
 
 .availabilitySection {
@@ -656,10 +622,6 @@
   position: absolute;
   top: 10px;
   right: 10px;
-}
-
-.modalClose:hover {
-  background: rgba(255, 255, 255, 0.2);
 }
 
 .modalTitle {
@@ -916,8 +878,51 @@
     background: rgba(255, 255, 255, 0.05);
     transition: transform 0.2s ease;
   }
+}
 
-  .contactItem:hover {
-    transform: translateY(-2px);
+/* --- EFEITOS DE HOVER APENAS PARA DESKTOP --- */
+@media (hover: hover) {
+  .navLink:hover::after {
+    width: 100%;
+  }
+
+  .primaryButton:hover {
+    background: linear-gradient(to right, #1d4ed8, #6d28d9);
+  }
+
+  .socialLink:hover {
+    color: white;
+  }
+
+  .skillCard:hover {
+    background-color: rgba(30, 41, 59, 0.7);
+    transform: scale(1.05);
+  }
+
+  .projectCard:hover {
+    background-color: rgba(30, 41, 59, 0.7);
+    transform: scale(1.05);
+  }
+
+  .projectLink:hover {
+    background-color: #1e293b;
+  }
+
+  .projectLinkDemo:hover {
+    background-color: rgba(37, 99, 235, 0.2);
+  }
+
+  .contactLink:hover {
+    color: #60a5fa;
+  }
+
+  .modalClose:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  @media (max-width: 480px) {
+    .contactItem:hover {
+      transform: translateY(-2px);
+    }
   }
 }

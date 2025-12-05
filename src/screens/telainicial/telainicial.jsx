@@ -251,6 +251,9 @@ const TelaInicial = () => {
                         <div className={styles.aboutGrid}>
                             <div className={styles.aboutText}>
                                 <p className={styles.aboutParagraph}>
+                                    Meu nome é Murillo Inacio Ludovico De Almeida, tenho 18 anos e sou de São Paulo - SP.
+                                </p>
+                                <p className={styles.aboutParagraph}>
                                     Desenvolvedor Front-end com foco em criação de interfaces modernas, performáticas e responsivas utilizando React.js. 
                                 </p>
                                 <p className={styles.aboutParagraph}>
