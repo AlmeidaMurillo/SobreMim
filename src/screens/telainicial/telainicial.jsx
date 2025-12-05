@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './telainicial.module.css';
 import { Menu, X } from "lucide-react";
 import { BsWhatsapp } from "react-icons/bs";
@@ -88,47 +88,33 @@ const TelaInicial = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(false);
-        }, 1800); // 1.8 segundos de loading
+        }, 1800); 
 
         return () => clearTimeout(timer);
     }, []);
 
     useEffect(() => {
-        if (loading) return; // Não executa a animação de fundo enquanto carrega
-        const initialLines = Array.from({ length: 18 }, (_, i) => {
+        if (loading) return; 
+
+        const isMobile = window.innerWidth < 768;
+        const numLines = isMobile ? 8 : 18;
+
+        const initialLines = Array.from({ length: numLines }, (_, i) => {
             const text = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
             return {
                 id: i,
                 text,
-                x: Math.random() * (window.innerWidth - 200),
-                y: Math.random() * window.innerHeight,
-                speed: 0.3 + Math.random() * 0.7,
-                opacity: 0.15 + Math.random() * 0.35,
-                color: getCodeColor(text),
+                style: {
+                    left: `${Math.random() * 95}vw`,
+                    opacity: 0.15 + Math.random() * 0.35,
+                    color: getCodeColor(text),
+                    animationDuration: `${10 + Math.random() * 10}s`,
+                    animationDelay: `${Math.random() * 10}s`,
+                }
             };
         });
 
         setCodeLines(initialLines);
-
-        const interval = setInterval(() => {
-            setCodeLines(prev =>
-                prev.map(line => {
-                    const newY = line.y > window.innerHeight + 100 ? -100 : line.y + line.speed;
-                    const newText = newY === -100 ? codeSnippets[Math.floor(Math.random() * codeSnippets.length)] : line.text;
-                    const newX = newY === -100 ? Math.random() * (window.innerWidth - 200) : line.x + Math.sin(line.y * 0.005) * 0.3;
-
-                    return {
-                        ...line,
-                        text: newText,
-                        y: newY,
-                        x: newX,
-                        color: newY === -100 ? getCodeColor(newText) : line.color,
-                    };
-                })
-            );
-        }, 50);
-
-        return () => clearInterval(interval);
     }, [loading]);
 
     const skills = [
@@ -205,13 +191,7 @@ const TelaInicial = () => {
                     <div
                         key={line.id}
                         className={styles.codeLine}
-                        style={{
-                            left: `${line.x}px`,
-                            top: `${line.y}px`,
-                            opacity: line.opacity,
-                            transform: `rotate(${Math.sin(line.y * 0.008) * 3}deg)`,
-                            color: line.color
-                        }}
+                        style={line.style}
                     >
                         {line.text}
                     </div>
